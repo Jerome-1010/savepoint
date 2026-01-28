@@ -1,0 +1,102 @@
+.active-banner {
+  background: linear-gradient(135deg, #1a2a3e 0%, #1a1a2e 100%);
+  border: 1px solid #4a8aff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 20px rgba(74, 138, 255, 0.15);
+}
+
+.banner-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #4aff4a;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(74, 255, 74, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 8px rgba(74, 255, 74, 0);
+  }
+}
+
+.banner-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #4aff4a;
+  text-transform: uppercase;
+}
+
+.banner-content {
+  margin-bottom: 16px;
+}
+
+.banner-task-name {
+  margin: 0;
+  font-size: 20px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.banner-next-step {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #8aaacc;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.step-icon {
+  flex-shrink: 0;
+}
+
+.banner-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.banner-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.banner-btn.pause-btn {
+  background: #2a3a4a;
+  color: #aaccee;
+}
+
+.banner-btn.pause-btn:hover {
+  background: #3a4a5a;
+}
+
+.banner-btn.complete-btn {
+  background: #1a3a2a;
+  color: #4aff4a;
+}
+
+.banner-btn.complete-btn:hover {
+  background: #2a4a3a;
+}

@@ -1,0 +1,93 @@
+.add-task-trigger {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: 2px dashed #3a3a5a;
+  border-radius: 8px;
+  color: #6a6a8a;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.add-task-trigger:hover {
+  border-color: #5a5a7a;
+  color: #8a8aaa;
+  background: #1a1a2e;
+}
+
+.add-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.add-task-form {
+  background: #1a1a2e;
+  border: 1px solid #3a3a5a;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.add-task-form input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0f0f1a;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.add-task-form input:focus {
+  outline: none;
+  border-color: #6a6aff;
+}
+
+.add-task-form input::placeholder {
+  color: #5a5a7a;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.btn-cancel,
+.btn-add {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: #8a8aaa;
+}
+
+.btn-cancel:hover {
+  background: #2a2a4a;
+}
+
+.btn-add {
+  background: #4a4aff;
+  color: #fff;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: #5a5aff;
+}
+
+.btn-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

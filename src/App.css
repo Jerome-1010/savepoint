@@ -1,0 +1,41 @@
+.app {
+  min-height: 100vh;
+  background: #0a0a14;
+  color: #fff;
+}
+
+.app-header {
+  text-align: center;
+  padding: 32px 16px 24px;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 32px;
+}
+
+.tagline {
+  margin: 8px 0 0;
+  color: #6a6a8a;
+  font-size: 14px;
+}
+
+.app-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.task-list-container {
+  margin-top: 24px;
+}
