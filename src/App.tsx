@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Task, SavePointData } from './types';
 import { useTasks } from './hooks/useTasks';
+import { useToast } from './hooks/useToast';
 import {
   SaveModal,
   LoadModal,
@@ -8,6 +9,7 @@ import {
   TaskList,
   AddTaskForm,
   ActiveTaskBanner,
+  Toast,
 } from './components';
 import './App.css';
 
@@ -18,6 +20,14 @@ type ModalState =
   | { type: 'complete'; task: Task };
 
 function App() {
+  const { toasts, removeToast, showError } = useToast();
+
+  const taskOptions = useMemo(() => ({
+    onStorageError: (error: Error) => {
+      showError(error.message);
+    },
+  }), [showError]);
+
   const {
     tasks,
     activeTask,
@@ -26,7 +36,7 @@ function App() {
     deleteTask,
     saveAndSwitch,
     completeTask,
-  } = useTasks();
+  } = useTasks(taskOptions);
 
   const [modal, setModal] = useState<ModalState>({ type: 'none' });
 
@@ -142,6 +152,8 @@ function App() {
           onCancel={() => setModal({ type: 'none' })}
         />
       )}
+
+      <Toast toasts={toasts} onRemove={removeToast} />
     </div>
   );
 }

@@ -1,10 +1,18 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { Task, SavePointData } from '../types';
 import { useLocalStorage } from './useLocalStorage';
 
-export function useTasks() {
-  const [tasks, setTasks] = useLocalStorage<Task[]>('savepoint-tasks', []);
-  const [activeTaskId, setActiveTaskId] = useLocalStorage<string | null>('savepoint-active', null);
+interface UseTasksOptions {
+  onStorageError?: (error: Error) => void;
+}
+
+export function useTasks(options?: UseTasksOptions) {
+  const storageOptions = useMemo(() => ({
+    onError: (error: Error) => options?.onStorageError?.(error),
+  }), [options]);
+
+  const [tasks, setTasks] = useLocalStorage<Task[]>('savepoint-tasks', [], storageOptions);
+  const [activeTaskId, setActiveTaskId] = useLocalStorage<string | null>('savepoint-active', null, storageOptions);
 
   const generateId = () => `task-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
