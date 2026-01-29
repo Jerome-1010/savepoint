@@ -36,6 +36,10 @@
   padding: 24px 16px;
 }
 
+.search-wrapper {
+  margin-top: 16px;
+}
+
 .task-list-container {
   margin-top: 24px;
 }

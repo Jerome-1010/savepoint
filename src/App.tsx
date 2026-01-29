@@ -8,6 +8,7 @@ import {
   TaskList,
   AddTaskForm,
   ActiveTaskBanner,
+  SearchInput,
 } from './components';
 import './App.css';
 
@@ -29,6 +30,11 @@ function App() {
   } = useTasks();
 
   const [modal, setModal] = useState<ModalState>({ type: 'none' });
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTasks = tasks.filter((task) =>
+    task.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSelectTask = (task: Task) => {
     if (task.id === activeTaskId) return;
@@ -107,9 +113,15 @@ function App() {
 
         <AddTaskForm onAdd={addTask} />
 
+        {tasks.length > 0 && (
+          <div className="search-wrapper">
+            <SearchInput value={searchQuery} onChange={setSearchQuery} />
+          </div>
+        )}
+
         <div className="task-list-container">
           <TaskList
-            tasks={tasks}
+            tasks={filteredTasks}
             activeTaskId={activeTaskId}
             onSelect={handleSelectTask}
             onComplete={handleCompleteTask}

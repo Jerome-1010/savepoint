@@ -4,3 +4,4 @@ export { CompleteModal } from './CompleteModal';
 export { TaskList } from './TaskList';
 export { AddTaskForm } from './AddTaskForm';
 export { ActiveTaskBanner } from './ActiveTaskBanner';
+export { SearchInput } from './SearchInput';
