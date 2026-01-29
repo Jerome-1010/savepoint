@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn var(--transition-fast);
 }
 
 @keyframes fadeIn {
@@ -18,16 +18,16 @@
 }
 
 .modal {
-  background: #1a1a2e;
-  border: 2px solid #4a4a6a;
-  border-radius: 12px;
-  padding: 24px;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 0 30px rgba(100, 100, 255, 0.2);
-  animation: slideUp 0.3s ease;
+  animation: slideUp var(--transition-normal);
 }
 
 @keyframes slideUp {
@@ -43,93 +43,93 @@
 
 .modal-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-xl);
 }
 
 .modal-icon {
   font-size: 48px;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #fff;
-  font-size: 24px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
 }
 
 .modal-subtitle {
-  color: #8a8aaa;
-  margin: 8px 0 0;
-  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: var(--spacing-sm) 0 0;
+  font-size: var(--font-size-md);
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .form-group label {
   display: block;
-  color: #ccc;
-  margin-bottom: 8px;
-  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-md);
 }
 
 .label-icon {
-  margin-right: 6px;
+  margin-right: var(--spacing-sm);
 }
 
 .form-group textarea {
   width: 100%;
-  padding: 12px;
-  background: #0f0f1a;
-  border: 1px solid #3a3a5a;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
+  padding: var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
   resize: vertical;
   font-family: inherit;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-fast);
 }
 
 .form-group textarea:focus {
   outline: none;
-  border-color: #6a6aff;
+  border-color: var(--color-accent-light);
 }
 
 .form-group textarea::placeholder {
-  color: #5a5a7a;
+  color: var(--color-text-placeholder);
 }
 
 .modal-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
 }
 
 .btn {
   flex: 1;
-  padding: 12px 16px;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4a4aff, #6a6aff);
-  color: #fff;
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-light));
+  color: var(--color-text-primary);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #5a5aff, #7a7aff);
+  background: linear-gradient(135deg, #5a5aff, var(--color-accent-lighter));
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: #2a2a4a;
-  color: #aaa;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-tertiary);
 }
 
 .btn-secondary:hover {
@@ -138,23 +138,23 @@
 
 /* Load Modal specific */
 .save-data {
-  background: #0f0f1a;
-  border-radius: 8px;
-  padding: 16px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
 }
 
 .save-timestamp {
   text-align: right;
-  font-size: 12px;
-  color: #6a6a8a;
-  margin-bottom: 12px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-dimmed);
+  margin-bottom: var(--spacing-md);
 }
 
 .save-section {
-  margin-bottom: 16px;
-  padding: 12px;
-  background: #1a1a2e;
-  border-radius: 6px;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-sm);
 }
 
 .save-section:last-child {
@@ -162,29 +162,29 @@
 }
 
 .save-section.highlight {
-  background: #1a2a3e;
-  border-left: 3px solid #4a8aff;
+  background: var(--color-bg-highlight);
+  border-left: 3px solid var(--color-accent-blue);
 }
 
 .save-section h3 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: #8a8aaa;
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .save-section p {
   margin: 0;
   color: #ddd;
-  font-size: 14px;
+  font-size: var(--font-size-md);
   line-height: 1.5;
   white-space: pre-wrap;
 }
 
 .no-save-data {
   text-align: center;
-  padding: 32px;
-  color: #6a6a8a;
+  padding: var(--spacing-2xl);
+  color: var(--color-text-dimmed);
 }
 
 .no-save-data p {
@@ -192,11 +192,11 @@
 }
 
 .no-save-data .hint {
-  margin-top: 8px;
-  font-size: 13px;
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
 }
 
 /* Complete Modal */
 .complete-modal .modal-header {
-  color: #4aff4a;
+  color: var(--color-accent-green);
 }
