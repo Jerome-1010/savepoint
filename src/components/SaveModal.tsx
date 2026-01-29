@@ -20,21 +20,22 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal save-modal">
+    <div className="modal-overlay" role="presentation">
+      <div className="modal save-modal" role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
         <div className="modal-header">
-          <div className="modal-icon">💾</div>
-          <h2>セーブポイント</h2>
+          <div className="modal-icon" aria-hidden="true">💾</div>
+          <h2 id="save-modal-title">セーブポイント</h2>
           <p className="modal-subtitle">「{task.name}」の進捗を保存します</p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>
-              <span className="label-icon">📍</span>
+            <label htmlFor="save-progress">
+              <span className="label-icon" aria-hidden="true">📍</span>
               どこまで進んだ？
             </label>
             <textarea
+              id="save-progress"
               value={progress}
               onChange={(e) => setProgress(e.target.value)}
               placeholder="現在の進捗状況を記録..."
@@ -43,11 +44,12 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
           </div>
 
           <div className="form-group">
-            <label>
-              <span className="label-icon">➡️</span>
+            <label htmlFor="save-next-step">
+              <span className="label-icon" aria-hidden="true">➡️</span>
               次にやること
             </label>
             <textarea
+              id="save-next-step"
               value={nextStep}
               onChange={(e) => setNextStep(e.target.value)}
               placeholder="再開時に最初にやることを記録..."
@@ -56,11 +58,12 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
           </div>
 
           <div className="form-group">
-            <label>
-              <span className="label-icon">📝</span>
+            <label htmlFor="save-remaining">
+              <span className="label-icon" aria-hidden="true">📝</span>
               残タスク・後回しにすること
             </label>
             <textarea
+              id="save-remaining"
               value={remaining}
               onChange={(e) => setRemaining(e.target.value)}
               placeholder="忘れないようにメモ..."

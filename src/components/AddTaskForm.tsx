@@ -20,27 +20,34 @@ export function AddTaskForm({ onAdd }: AddTaskFormProps) {
 
   if (!isExpanded) {
     return (
-      <button className="add-task-trigger" onClick={() => setIsExpanded(true)}>
-        <span className="add-icon">+</span>
+      <button
+        className="add-task-trigger"
+        onClick={() => setIsExpanded(true)}
+        aria-label="新しいタスクを追加"
+      >
+        <span className="add-icon" aria-hidden="true">+</span>
         <span>新しいタスクを追加</span>
       </button>
     );
   }
 
   return (
-    <form className="add-task-form" onSubmit={handleSubmit}>
+    <form className="add-task-form" onSubmit={handleSubmit} role="form" aria-label="タスク追加フォーム">
+      <label htmlFor="new-task-input" className="visually-hidden">タスク名</label>
       <input
+        id="new-task-input"
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="タスク名を入力..."
         autoFocus
+        aria-required="true"
       />
       <div className="form-buttons">
         <button type="button" className="btn-cancel" onClick={() => setIsExpanded(false)}>
           キャンセル
         </button>
-        <button type="submit" className="btn-add" disabled={!name.trim()}>
+        <button type="submit" className="btn-add" disabled={!name.trim()} aria-disabled={!name.trim()}>
           追加
         </button>
       </div>

@@ -32,12 +32,20 @@ export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete }
   };
 
   const renderTask = (task: Task) => (
-    <div
+    <article
       key={task.id}
       className={`task-item ${task.id === activeTaskId ? 'active' : ''} ${task.status}`}
+      aria-label={`タスク: ${task.name}`}
     >
-      <div className="task-main" onClick={() => task.status !== 'completed' && onSelect(task)}>
-        <span className="task-status-icon">{getStatusIcon(task)}</span>
+      <div
+        className="task-main"
+        onClick={() => task.status !== 'completed' && onSelect(task)}
+        onKeyDown={(e) => e.key === 'Enter' && task.status !== 'completed' && onSelect(task)}
+        role={task.status !== 'completed' ? 'button' : undefined}
+        tabIndex={task.status !== 'completed' ? 0 : undefined}
+        aria-label={task.status !== 'completed' ? `${task.name}を選択` : undefined}
+      >
+        <span className="task-status-icon" aria-hidden="true">{getStatusIcon(task)}</span>
         <div className="task-info">
           <span className="task-name">{task.name}</span>
           {task.nextStep && task.status !== 'completed' && (
@@ -49,12 +57,12 @@ export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete }
           <span className="task-date">{formatDate(task.updatedAt)}</span>
         </div>
       </div>
-      <div className="task-actions">
+      <div className="task-actions" role="group" aria-label="タスク操作">
         {task.status !== 'completed' && (
           <button
             className="task-btn complete-btn"
             onClick={(e) => { e.stopPropagation(); onComplete(task); }}
-            title="完了にする"
+            aria-label={`${task.name}を完了にする`}
           >
             ✓
           </button>
@@ -62,12 +70,12 @@ export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete }
         <button
           className="task-btn delete-btn"
           onClick={(e) => { e.stopPropagation(); onDelete(task); }}
-          title="削除"
+          aria-label={`${task.name}を削除`}
         >
           ×
         </button>
       </div>
-    </div>
+    </article>
   );
 
   return (
