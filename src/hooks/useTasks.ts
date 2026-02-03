@@ -1,97 +1,116 @@
-import { useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Task, SavePointData } from '../types';
-import { useLocalStorage } from './useLocalStorage';
+
+const API_BASE = '/api/tasks';
 
 export function useTasks() {
-  const [tasks, setTasks] = useLocalStorage<Task[]>('savepoint-tasks', []);
-  const [activeTaskId, setActiveTaskId] = useLocalStorage<string | null>('savepoint-active', null);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const generateId = () => `task-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  // タスク一覧を取得
+  const fetchTasks = useCallback(async () => {
+    try {
+      const res = await fetch(API_BASE);
+      if (!res.ok) throw new Error('Failed to fetch tasks');
+      const data: Task[] = await res.json();
+      setTasks(data);
 
-  const addTask = useCallback((name: string) => {
-    const newTask: Task = {
-      id: generateId(),
-      name,
-      status: 'paused',
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      progress: '',
-      nextStep: '',
-      remaining: '',
-    };
-    setTasks((prev) => [...prev, newTask]);
-    return newTask;
-  }, [setTasks]);
-
-  const updateTask = useCallback((id: string, updates: Partial<Task>) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? { ...task, ...updates, updatedAt: Date.now() }
-          : task
-      )
-    );
-  }, [setTasks]);
-
-  const deleteTask = useCallback((id: string) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
-    if (activeTaskId === id) {
-      setActiveTaskId(null);
+      // アクティブなタスクを検出
+      const active = data.find((t) => t.status === 'active');
+      setActiveTaskId(active?.id ?? null);
+    } catch (error) {
+      console.error('Failed to fetch tasks:', error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [setTasks, activeTaskId, setActiveTaskId]);
+  }, []);
 
-  const saveAndSwitch = useCallback((
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  const addTask = useCallback(async (name: string) => {
+    try {
+      const res = await fetch(API_BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+      if (!res.ok) throw new Error('Failed to create task');
+      const newTask: Task = await res.json();
+      setTasks((prev) => [...prev, newTask]);
+      return newTask;
+    } catch (error) {
+      console.error('Failed to add task:', error);
+      return null;
+    }
+  }, []);
+
+  const updateTask = useCallback(async (id: string, updates: Partial<Task>) => {
+    try {
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error('Failed to update task');
+      const updatedTask: Task = await res.json();
+      setTasks((prev) =>
+        prev.map((task) => (task.id === id ? updatedTask : task))
+      );
+      return updatedTask;
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      return null;
+    }
+  }, []);
+
+  const deleteTask = useCallback(async (id: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Failed to delete task');
+      setTasks((prev) => prev.filter((task) => task.id !== id));
+      if (activeTaskId === id) {
+        setActiveTaskId(null);
+      }
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  }, [activeTaskId]);
+
+  const saveAndSwitch = useCallback(async (
     currentTaskId: string | null,
     saveData: SavePointData,
     nextTaskId: string | null
   ) => {
     // 現在のタスクをセーブして中断
     if (currentTaskId) {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === currentTaskId
-            ? {
-                ...task,
-                ...saveData,
-                status: 'paused' as const,
-                updatedAt: Date.now(),
-              }
-            : task
-        )
-      );
+      await updateTask(currentTaskId, {
+        ...saveData,
+        status: 'paused',
+      });
     }
 
     // 次のタスクをアクティブに
     if (nextTaskId) {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === nextTaskId
-            ? { ...task, status: 'active' as const, updatedAt: Date.now() }
-            : task
-        )
-      );
+      await updateTask(nextTaskId, { status: 'active' });
     }
 
     setActiveTaskId(nextTaskId);
-  }, [setTasks, setActiveTaskId]);
+  }, [updateTask]);
 
-  const completeTask = useCallback((id: string, saveData: SavePointData) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              ...saveData,
-              status: 'completed' as const,
-              updatedAt: Date.now(),
-            }
-          : task
-      )
-    );
+  const completeTask = useCallback(async (id: string, saveData: SavePointData) => {
+    await updateTask(id, {
+      ...saveData,
+      status: 'completed',
+    });
     if (activeTaskId === id) {
       setActiveTaskId(null);
     }
-  }, [setTasks, activeTaskId, setActiveTaskId]);
+  }, [updateTask, activeTaskId]);
 
   const activeTask = tasks.find((t) => t.id === activeTaskId) || null;
 
@@ -99,6 +118,7 @@ export function useTasks() {
     tasks,
     activeTask,
     activeTaskId,
+    isLoading,
     addTask,
     updateTask,
     deleteTask,
