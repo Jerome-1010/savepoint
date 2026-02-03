@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# Savepoint
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+タスク切り替え時のコンテキストを保存するタスク管理アプリ。
 
-Currently, two official plugins are available:
+作業を中断する際に「どこまで進んだか」「次に何をするか」「残りの作業は何か」を記録しておくことで、スムーズにタスクを再開できます。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 機能
 
-## React Compiler
+- タスクの追加・削除
+- タスク切り替え時にセーブポイント（進捗、次のステップ、残りの作業）を保存
+- 保存したコンテキストをロードしてタスクを再開
+- タスク完了時の振り返り記録
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 技術スタック
 
-## Expanding the ESLint configuration
+| カテゴリ | 技術 |
+|---------|------|
+| フロントエンド | React 19, TypeScript |
+| ビルドツール | Vite 7 |
+| バックエンド | Hono |
+| データベース | SQLite (better-sqlite3) |
+| テスト | Vitest, Testing Library |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## セットアップ
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# 依存関係のインストール
+pnpm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 開発サーバー起動（フロントエンド）
+pnpm dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 開発サーバー起動（バックエンド）
+pnpm dev:server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## スクリプト
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| コマンド | 説明 |
+|---------|------|
+| `pnpm dev` | Vite開発サーバーを起動 |
+| `pnpm dev:server` | バックエンドサーバーを起動（ホットリロード付き） |
+| `pnpm build` | プロダクションビルド |
+| `pnpm start` | プロダクションサーバーを起動 |
+| `pnpm test` | テストを実行 |
+| `pnpm test:coverage` | カバレッジ付きでテストを実行 |
+| `pnpm lint` | ESLintを実行 |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## プロジェクト構成
+
 ```
+savepoint/
+├── src/               # フロントエンドソースコード
+│   ├── components/    # Reactコンポーネント
+│   ├── hooks/         # カスタムフック
+│   ├── test/          # テストファイル
+│   ├── App.tsx        # メインアプリコンポーネント
+│   └── types.ts       # 型定義
+├── server/            # バックエンドソースコード
+│   ├── routes/        # APIルート
+│   ├── db.ts          # データベース設定
+│   └── index.ts       # サーバーエントリーポイント
+├── data/              # SQLiteデータベースファイル
+└── public/            # 静的ファイル
+```
+
+## API
+
+サーバーは `/api/tasks` エンドポイントでタスクの CRUD 操作を提供します。デフォルトポートは `3000` です（環境変数 `PORT` で変更可能）。
+
+## ライセンス
+
+MIT
