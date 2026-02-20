@@ -7,9 +7,10 @@ interface SaveModalProps {
   nextTask: Task | null;
   onSave: (data: SavePointData) => void;
   onCancel: () => void;
+  subtitle?: string;
 }
 
-export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) {
+export function SaveModal({ task, nextTask, onSave, onCancel, subtitle }: SaveModalProps) {
   const [progress, setProgress] = useState(task.progress);
   const [nextStep, setNextStep] = useState(task.nextStep);
   const [remaining, setRemaining] = useState(task.remaining);
@@ -25,7 +26,9 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
         <div className="modal-header">
           <div className="modal-icon">💾</div>
           <h2>セーブポイント</h2>
-          <p className="modal-subtitle">「{task.name}」の進捗を保存します</p>
+          <p className="modal-subtitle">
+            {subtitle ?? `「${task.name}」の進捗を保存します`}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit}>
