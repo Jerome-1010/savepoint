@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './AddTaskForm.css';
 
 interface AddTaskFormProps {
@@ -8,6 +8,17 @@ interface AddTaskFormProps {
 export function AddTaskForm({ onAdd }: AddTaskFormProps) {
   const [name, setName] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsExpanded(false);
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isExpanded]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

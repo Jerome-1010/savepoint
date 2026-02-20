@@ -107,7 +107,7 @@ describe('LoadModal', () => {
 
     render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
 
-    await user.click(screen.getByText('キャンセル'));
+    await user.click(screen.getByRole('button', { name: /キャンセル/ }));
 
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
@@ -120,7 +120,7 @@ describe('LoadModal', () => {
 
     render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
 
-    await user.click(screen.getByText('再開する'));
+    await user.click(screen.getByRole('button', { name: /再開する/ }));
 
     expect(onLoad).toHaveBeenCalledTimes(1);
   });
@@ -156,5 +156,44 @@ describe('LoadModal', () => {
 
     expect(screen.getByText('前回の進捗')).toBeInTheDocument();
     expect(screen.queryByText('残タスク')).not.toBeInTheDocument();
+  });
+
+  it('calls onCancel when Escape key is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onLoad = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onLoad when Cmd+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onLoad = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
+
+    await user.keyboard('{Meta>}{Enter}{/Meta}');
+
+    expect(onLoad).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onLoad when Ctrl+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onLoad = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
+
+    await user.keyboard('{Control>}{Enter}{/Control}');
+
+    expect(onLoad).toHaveBeenCalledTimes(1);
   });
 });

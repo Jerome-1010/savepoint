@@ -130,4 +130,32 @@ describe('AddTaskForm', () => {
 
     expect(onAdd).not.toHaveBeenCalled();
   });
+
+  it('collapses form when Escape key is pressed while expanded', async () => {
+    const user = userEvent.setup();
+    const onAdd = vi.fn();
+
+    render(<AddTaskForm onAdd={onAdd} />);
+
+    await user.click(screen.getByText('新しいタスクを追加'));
+    expect(screen.getByPlaceholderText('タスク名を入力...')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+
+    expect(screen.getByText('新しいタスクを追加')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('タスク名を入力...')).not.toBeInTheDocument();
+  });
+
+  it('does not collapse form when Escape key is pressed while not expanded', async () => {
+    const user = userEvent.setup();
+    const onAdd = vi.fn();
+
+    render(<AddTaskForm onAdd={onAdd} />);
+
+    // Don't expand the form - just press Escape
+    await user.keyboard('{Escape}');
+
+    // Form should still show the trigger button
+    expect(screen.getByText('新しいタスクを追加')).toBeInTheDocument();
+  });
 });

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Task, SavePointData } from '../types';
+import { useModalKeyboard } from '../hooks/useModalKeyboard';
 import './Modal.css';
 
 interface SaveModalProps {
@@ -14,10 +15,16 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
   const [nextStep, setNextStep] = useState(task.nextStep);
   const [remaining, setRemaining] = useState(task.remaining);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleConfirm = () => {
     onSave({ progress, nextStep, remaining });
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleConfirm();
+  };
+
+  useModalKeyboard({ onConfirm: handleConfirm, onCancel });
 
   return (
     <div className="modal-overlay">
@@ -70,10 +77,10 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
 
           <div className="modal-actions">
             <button type="button" className="btn btn-secondary" onClick={onCancel}>
-              キャンセル
+              キャンセル<span className="shortcut-hint" aria-hidden="true">Esc</span>
             </button>
             <button type="submit" className="btn btn-primary">
-              {nextTask ? `保存して「${nextTask.name}」へ` : '保存して終了'}
+              {nextTask ? `保存して「${nextTask.name}」へ` : '保存して終了'}<span className="shortcut-hint" aria-hidden="true">⌘+Enter</span>
             </button>
           </div>
         </form>
