@@ -69,31 +69,42 @@ tasks.put('/:id', async (c) => {
 
   values.push(id);
 
-  const stmt = db.prepare(`UPDATE tasks SET ${updates.join(', ')} WHERE id = ?`);
-  stmt.run(...values);
-
-  const row = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
-
-  // 更新内容に応じて履歴を記録
+  // 更新内容に応じて履歴を記録するかどうか
   const shouldRecord =
     body.status !== undefined ||
     body.progress !== undefined ||
     body.nextStep !== undefined ||
     body.remaining !== undefined;
 
-  if (shouldRecord) {
-    db.prepare(`
-      INSERT INTO task_history (task_id, status, progress, next_step, remaining, saved_at)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).run(row.id, row.status, row.progress, row.next_step, row.remaining, Date.now());
-  }
+  const updateAndRecord = db.transaction(() => {
+    const stmt = db.prepare(`UPDATE tasks SET ${updates.join(', ')} WHERE id = ?`);
+    stmt.run(...values);
 
+    const row = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
+
+    if (shouldRecord) {
+      db.prepare(`
+        INSERT INTO task_history (task_id, status, progress, next_step, remaining, saved_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run(row.id, row.status, row.progress, row.next_step, row.remaining, Date.now());
+    }
+
+    return row;
+  });
+
+  const row = updateAndRecord();
   return c.json(rowToTask(row));
 });
 
 // GET /api/tasks/:id/history - タスク履歴取得
 tasks.get('/:id/history', (c) => {
   const id = c.req.param('id');
+
+  const existing = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow | undefined;
+  if (!existing) {
+    return c.json({ error: 'Task not found' }, 404);
+  }
+
   const rows = db.prepare(
     'SELECT * FROM task_history WHERE task_id = ? ORDER BY saved_at DESC'
   ).all(id) as HistoryRow[];
