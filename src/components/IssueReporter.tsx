@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './IssueReporter.css';
 
 export function IssueReporter() {
@@ -9,20 +9,7 @@ export function IssueReporter() {
   const [result, setResult] = useState<{ number: number; url: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
-      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        handleSubmit();
-      }
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [isOpen, title, body]);
-
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (!title.trim() || isSubmitting) return;
     setIsSubmitting(true);
     setError(null);
@@ -42,7 +29,20 @@ export function IssueReporter() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [title, body, isSubmitting]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        handleSubmit();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isOpen, handleSubmit]);
 
   return (
     <>
@@ -66,7 +66,7 @@ export function IssueReporter() {
             {result ? (
               <div className="issue-reporter-success">
                 <p>✅ Issue <a href={result.url} target="_blank" rel="noopener noreferrer">#{result.number}</a> を作成しました</p>
-                <button className="btn btn-secondary" onClick={() => { setResult(null); }}>続けて起票</button>
+                <button className="issue-reporter-btn issue-reporter-btn-secondary" onClick={() => { setResult(null); }}>続けて起票</button>
               </div>
             ) : (
               <>
@@ -87,11 +87,11 @@ export function IssueReporter() {
                 />
                 {error && <p className="issue-reporter-error">{error}</p>}
                 <div className="issue-reporter-actions">
-                  <button className="btn btn-secondary" onClick={() => setIsOpen(false)}>
+                  <button className="issue-reporter-btn issue-reporter-btn-secondary" onClick={() => setIsOpen(false)}>
                     キャンセル <span className="shortcut-hint">Esc</span>
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="issue-reporter-btn issue-reporter-btn-primary"
                     onClick={handleSubmit}
                     disabled={!title.trim() || isSubmitting}
                   >

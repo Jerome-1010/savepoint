@@ -137,7 +137,7 @@
 }
 
 /* Buttons */
-.btn {
+.issue-reporter-btn {
   padding: 8px 14px;
   border-radius: 6px;
   font-size: 13px;
@@ -151,26 +151,26 @@
   font-family: inherit;
 }
 
-.btn:disabled {
+.issue-reporter-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.btn-primary {
+.issue-reporter-btn-primary {
   background: #4a8aff;
   color: #fff;
 }
 
-.btn-primary:hover:not(:disabled) {
+.issue-reporter-btn-primary:hover:not(:disabled) {
   background: #5a9aff;
 }
 
-.btn-secondary {
+.issue-reporter-btn-secondary {
   background: #2a2a4e;
   color: #aaaacc;
 }
 
-.btn-secondary:hover:not(:disabled) {
+.issue-reporter-btn-secondary:hover:not(:disabled) {
   background: #3a3a5e;
 }
 

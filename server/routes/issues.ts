@@ -30,7 +30,8 @@ issues.post('/', async (c) => {
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    return c.json({ error: 'Failed to create issue', details: err }, 500);
+    console.error('GitHub API error:', err);
+    return c.json({ error: 'Failed to create issue' }, 500);
   }
 
   const issue = await res.json() as { number: number; html_url: string };
