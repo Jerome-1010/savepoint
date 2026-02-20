@@ -8,6 +8,7 @@ import {
   TaskList,
   AddTaskForm,
   ActiveTaskBanner,
+  IssueReporter,
 } from './components';
 import './App.css';
 
@@ -142,6 +143,8 @@ function App() {
           onCancel={() => setModal({ type: 'none' })}
         />
       )}
+
+      <IssueReporter />
     </div>
   );
 }
