@@ -67,37 +67,8 @@
   margin-bottom: 16px;
 }
 
-.form-group label {
-  display: block;
-  color: #ccc;
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
 .label-icon {
   margin-right: 6px;
-}
-
-.form-group textarea {
-  width: 100%;
-  padding: 12px;
-  background: #0f0f1a;
-  border: 1px solid #3a3a5a;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  resize: vertical;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.form-group textarea:focus {
-  outline: none;
-  border-color: #6a6aff;
-}
-
-.form-group textarea::placeholder {
-  color: #5a5a7a;
 }
 
 .modal-actions {
@@ -210,6 +181,7 @@
 }
 
 .form-group label {
+  display: block;
   font-size: 13px;
   font-weight: 600;
   color: #9a9abb;
