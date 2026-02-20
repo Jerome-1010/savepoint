@@ -28,6 +28,16 @@ describe('SaveModal', () => {
     expect(screen.getByText('「My Task」の進捗を保存します')).toBeInTheDocument();
   });
 
+  it('renders custom saveLabel when provided', () => {
+    const task = createTask({ name: 'My Task' });
+    const onSave = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} saveLabel="タスクを作成" />);
+
+    expect(screen.getByText('タスクを作成')).toBeInTheDocument();
+  });
+
   it('renders custom subtitle when subtitle prop is provided', () => {
     const task = createTask({ name: 'My Task' });
     const onSave = vi.fn();

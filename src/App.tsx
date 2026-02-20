@@ -93,8 +93,11 @@ function App() {
 
   const handleCreate = async (data: SavePointData) => {
     if (modal.type !== 'create') return;
-    await addTask(modal.taskName, data);
-    setModal({ type: 'none' });
+    const result = await addTask(modal.taskName, data);
+    if (result) {
+      setModal({ type: 'none' });
+    }
+    // 失敗時はモーダルを閉じない
   };
 
   return (
@@ -170,6 +173,7 @@ function App() {
           onSave={handleCreate}
           onCancel={() => setModal({ type: 'none' })}
           subtitle="タスクを作成します"
+          saveLabel="タスクを作成"
         />
       )}
     </div>

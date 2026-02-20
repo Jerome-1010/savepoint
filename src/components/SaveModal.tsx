@@ -8,9 +8,10 @@ interface SaveModalProps {
   onSave: (data: SavePointData) => void;
   onCancel: () => void;
   subtitle?: string;
+  saveLabel?: string;
 }
 
-export function SaveModal({ task, nextTask, onSave, onCancel, subtitle }: SaveModalProps) {
+export function SaveModal({ task, nextTask, onSave, onCancel, subtitle, saveLabel }: SaveModalProps) {
   const [progress, setProgress] = useState(task.progress);
   const [nextStep, setNextStep] = useState(task.nextStep);
   const [remaining, setRemaining] = useState(task.remaining);
@@ -76,7 +77,7 @@ export function SaveModal({ task, nextTask, onSave, onCancel, subtitle }: SaveMo
               キャンセル
             </button>
             <button type="submit" className="btn btn-primary">
-              {nextTask ? `保存して「${nextTask.name}」へ` : '保存して終了'}
+              {saveLabel ?? (nextTask ? `保存して「${nextTask.name}」へ` : '保存して終了')}
             </button>
           </div>
         </form>
