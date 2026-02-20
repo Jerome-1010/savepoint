@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { db, rowToTask, type TaskRow, type Task } from '../db.js';
+import { db, rowToTask, rowToHistory, type TaskRow, type Task, type HistoryRow } from '../db.js';
 
 const tasks = new Hono();
 
@@ -73,7 +73,31 @@ tasks.put('/:id', async (c) => {
   stmt.run(...values);
 
   const row = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
+
+  // 更新内容に応じて履歴を記録
+  const shouldRecord =
+    body.status !== undefined ||
+    body.progress !== undefined ||
+    body.nextStep !== undefined ||
+    body.remaining !== undefined;
+
+  if (shouldRecord) {
+    db.prepare(`
+      INSERT INTO task_history (task_id, status, progress, next_step, remaining, saved_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(row.id, row.status, row.progress, row.next_step, row.remaining, Date.now());
+  }
+
   return c.json(rowToTask(row));
+});
+
+// GET /api/tasks/:id/history - タスク履歴取得
+tasks.get('/:id/history', (c) => {
+  const id = c.req.param('id');
+  const rows = db.prepare(
+    'SELECT * FROM task_history WHERE task_id = ? ORDER BY saved_at DESC'
+  ).all(id) as HistoryRow[];
+  return c.json(rows.map(rowToHistory));
 });
 
 // DELETE /api/tasks/:id - タスク削除

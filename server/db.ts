@@ -24,6 +24,19 @@ db.exec(`
   )
 `);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS task_history (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_id    TEXT NOT NULL,
+    status     TEXT NOT NULL,
+    progress   TEXT NOT NULL DEFAULT '',
+    next_step  TEXT NOT NULL DEFAULT '',
+    remaining  TEXT NOT NULL DEFAULT '',
+    saved_at   INTEGER NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+  )
+`);
+
 export interface TaskRow {
   id: string;
   name: string;
@@ -56,5 +69,37 @@ export function rowToTask(row: TaskRow): Task {
     progress: row.progress,
     nextStep: row.next_step,
     remaining: row.remaining,
+  };
+}
+
+export interface HistoryRow {
+  id: number;
+  task_id: string;
+  status: string;
+  progress: string;
+  next_step: string;
+  remaining: string;
+  saved_at: number;
+}
+
+export interface TaskHistory {
+  id: number;
+  taskId: string;
+  status: 'active' | 'paused' | 'completed';
+  progress: string;
+  nextStep: string;
+  remaining: string;
+  savedAt: number;
+}
+
+export function rowToHistory(row: HistoryRow): TaskHistory {
+  return {
+    id: row.id,
+    taskId: row.task_id,
+    status: row.status as TaskHistory['status'],
+    progress: row.progress,
+    nextStep: row.next_step,
+    remaining: row.remaining,
+    savedAt: row.saved_at,
   };
 }
