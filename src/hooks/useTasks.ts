@@ -30,12 +30,12 @@ export function useTasks() {
     fetchTasks();
   }, [fetchTasks]);
 
-  const addTask = useCallback(async (name: string) => {
+  const addTask = useCallback(async (name: string, saveData?: { progress?: string; nextStep?: string; remaining?: string }) => {
     try {
       const res = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, ...saveData }),
       });
       if (!res.ok) throw new Error('Failed to create task');
       const newTask: Task = await res.json();

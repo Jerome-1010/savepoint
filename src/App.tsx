@@ -15,7 +15,8 @@ type ModalState =
   | { type: 'none' }
   | { type: 'save'; nextTask: Task | null }
   | { type: 'load'; task: Task }
-  | { type: 'complete'; task: Task };
+  | { type: 'complete'; task: Task }
+  | { type: 'create'; taskName: string };
 
 function App() {
   const {
@@ -86,6 +87,19 @@ function App() {
     }
   };
 
+  const handleAddTaskName = (name: string) => {
+    setModal({ type: 'create', taskName: name });
+  };
+
+  const handleCreate = async (data: SavePointData) => {
+    if (modal.type !== 'create') return;
+    const result = await addTask(modal.taskName, data);
+    if (result) {
+      setModal({ type: 'none' });
+    }
+    // 失敗時はモーダルを閉じない
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -105,7 +119,7 @@ function App() {
           />
         )}
 
-        <AddTaskForm onAdd={addTask} />
+        <AddTaskForm onAdd={handleAddTaskName} />
 
         <div className="task-list-container">
           <TaskList
@@ -140,6 +154,26 @@ function App() {
           task={modal.task}
           onComplete={handleComplete}
           onCancel={() => setModal({ type: 'none' })}
+        />
+      )}
+
+      {modal.type === 'create' && (
+        <SaveModal
+          task={{
+            id: '',
+            name: modal.taskName,
+            status: 'paused',
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            progress: '',
+            nextStep: '',
+            remaining: '',
+          }}
+          nextTask={null}
+          onSave={handleCreate}
+          onCancel={() => setModal({ type: 'none' })}
+          subtitle="タスクを作成します"
+          saveLabel="タスクを作成"
         />
       )}
     </div>

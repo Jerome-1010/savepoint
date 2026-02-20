@@ -12,7 +12,12 @@ tasks.get('/', (c) => {
 
 // POST /api/tasks - タスク作成
 tasks.post('/', async (c) => {
-  const body = await c.req.json<{ name: string }>();
+  const body = await c.req.json<{
+    name: string;
+    progress?: string;
+    nextStep?: string;
+    remaining?: string;
+  }>();
 
   if (!body.name || typeof body.name !== 'string') {
     return c.json({ error: 'name is required' }, 400);
@@ -23,10 +28,10 @@ tasks.post('/', async (c) => {
 
   const stmt = db.prepare(`
     INSERT INTO tasks (id, name, status, created_at, updated_at, progress, next_step, remaining)
-    VALUES (?, ?, 'paused', ?, ?, '', '', '')
+    VALUES (?, ?, 'paused', ?, ?, ?, ?, ?)
   `);
 
-  stmt.run(id, body.name, now, now);
+  stmt.run(id, body.name, now, now, body.progress ?? '', body.nextStep ?? '', body.remaining ?? '');
 
   const row = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
   return c.json(rowToTask(row), 201);
