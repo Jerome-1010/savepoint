@@ -16,8 +16,8 @@ export function LoadModal({ task, onLoad, onCancel }: LoadModalProps) {
       <div className="modal load-modal">
         <div className="modal-header">
           <div className="modal-icon">📂</div>
-          <h2>ロード</h2>
-          <p className="modal-subtitle">「{task.name}」を再開します</p>
+          <h2 className="modal-task-name">{task.name}</h2>
+          <p className="modal-subtitle">タスクを再開します</p>
         </div>
 
         {hasProgress ? (
@@ -29,21 +29,33 @@ export function LoadModal({ task, onLoad, onCancel }: LoadModalProps) {
             {task.progress && (
               <div className="save-section">
                 <h3><span className="label-icon">📍</span> 前回の進捗</h3>
-                <p>{task.progress}</p>
+                <ul className="save-section-list">
+                  {task.progress.split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
               </div>
             )}
 
             {task.nextStep && (
               <div className="save-section highlight">
                 <h3><span className="label-icon">➡️</span> 次にやること</h3>
-                <p>{task.nextStep}</p>
+                <ul className="save-section-list">
+                  {task.nextStep.split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
               </div>
             )}
 
             {task.remaining && (
               <div className="save-section">
                 <h3><span className="label-icon">📝</span> 残タスク</h3>
-                <p>{task.remaining}</p>
+                <ul className="save-section-list">
+                  {task.remaining.split('\n').filter(Boolean).map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
