@@ -21,10 +21,10 @@
   background: #1a1a2e;
   border: 2px solid #4a4a6a;
   border-radius: 12px;
-  padding: 24px;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
+  padding: 32px;
+  width: 95%;
+  max-width: 720px;
+  max-height: 92vh;
   overflow-y: auto;
   box-shadow: 0 0 30px rgba(100, 100, 255, 0.2);
   animation: slideUp 0.3s ease;
@@ -199,4 +199,105 @@
 /* Complete Modal */
 .complete-modal .modal-header {
   color: #4aff4a;
+}
+
+.modal-task-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 8px 0 4px;
+  word-break: break-all;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a9abb;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.list-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.list-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.list-input-row input {
+  flex: 1;
+  padding: 8px 12px;
+  background: #0f0f1a;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.list-bullet {
+  color: #6a6aff;
+  font-size: 18px;
+  width: 16px;
+  text-align: center;
+}
+
+.list-remove-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.list-remove-btn:hover:not(:disabled) {
+  color: #ff6a6a;
+  background: rgba(255, 106, 106, 0.1);
+}
+
+.list-remove-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.list-add-btn {
+  background: none;
+  border: 1px dashed #3a3a5a;
+  color: #6a6aff;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.list-add-btn:hover {
+  background: rgba(106, 106, 255, 0.1);
+  border-color: #6a6aff;
+}
+
+.save-section-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.save-section-list li {
+  padding: 4px 0;
+  color: #ccc;
+}
+
+.save-section-list li::before {
+  content: "•";
+  color: #6a6aff;
+  margin-right: 8px;
 }

@@ -10,13 +10,33 @@ interface SaveModalProps {
 }
 
 export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) {
-  const [progress, setProgress] = useState(task.progress);
-  const [nextStep, setNextStep] = useState(task.nextStep);
-  const [remaining, setRemaining] = useState(task.remaining);
+  const [progressItems, setProgressItems] = useState<string[]>(
+    task.progress ? task.progress.split('\n').filter(Boolean) : ['']
+  );
+  const [nextStepItems, setNextStepItems] = useState<string[]>(
+    task.nextStep ? task.nextStep.split('\n').filter(Boolean) : ['']
+  );
+  const [remainingItems, setRemainingItems] = useState<string[]>(
+    task.remaining ? task.remaining.split('\n').filter(Boolean) : ['']
+  );
+
+  const handleItemChange = (setter: React.Dispatch<React.SetStateAction<string[]>>, index: number, value: string) => {
+    setter(prev => prev.map((item, i) => i === index ? value : item));
+  };
+  const handleAddItem = (setter: React.Dispatch<React.SetStateAction<string[]>>) => {
+    setter(prev => [...prev, '']);
+  };
+  const handleRemoveItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, index: number) => {
+    setter(prev => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ progress, nextStep, remaining });
+    onSave({
+      progress: progressItems.filter(Boolean).join('\n'),
+      nextStep: nextStepItems.filter(Boolean).join('\n'),
+      remaining: remainingItems.filter(Boolean).join('\n'),
+    });
   };
 
   return (
@@ -24,8 +44,8 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
       <div className="modal save-modal">
         <div className="modal-header">
           <div className="modal-icon">💾</div>
-          <h2>セーブポイント</h2>
-          <p className="modal-subtitle">「{task.name}」の進捗を保存します</p>
+          <h2 className="modal-task-name">{task.name}</h2>
+          <p className="modal-subtitle">進捗を保存します</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -34,12 +54,31 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
               <span className="label-icon">📍</span>
               どこまで進んだ？
             </label>
-            <textarea
-              value={progress}
-              onChange={(e) => setProgress(e.target.value)}
-              placeholder="現在の進捗状況を記録..."
-              rows={3}
-            />
+            <div className="list-input-group">
+              {progressItems.map((item, i) => (
+                <div key={i} className="list-input-row">
+                  <span className="list-bullet">•</span>
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleItemChange(setProgressItems, i, e.target.value)}
+                    placeholder="進捗を入力..."
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') { e.preventDefault(); handleAddItem(setProgressItems); }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="list-remove-btn"
+                    onClick={() => handleRemoveItem(setProgressItems, i)}
+                    disabled={progressItems.length === 1}
+                  >×</button>
+                </div>
+              ))}
+              <button type="button" className="list-add-btn" onClick={() => handleAddItem(setProgressItems)}>
+                + 追加
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
@@ -47,12 +86,31 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
               <span className="label-icon">➡️</span>
               次にやること
             </label>
-            <textarea
-              value={nextStep}
-              onChange={(e) => setNextStep(e.target.value)}
-              placeholder="再開時に最初にやることを記録..."
-              rows={2}
-            />
+            <div className="list-input-group">
+              {nextStepItems.map((item, i) => (
+                <div key={i} className="list-input-row">
+                  <span className="list-bullet">•</span>
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleItemChange(setNextStepItems, i, e.target.value)}
+                    placeholder="次のステップを入力..."
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') { e.preventDefault(); handleAddItem(setNextStepItems); }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="list-remove-btn"
+                    onClick={() => handleRemoveItem(setNextStepItems, i)}
+                    disabled={nextStepItems.length === 1}
+                  >×</button>
+                </div>
+              ))}
+              <button type="button" className="list-add-btn" onClick={() => handleAddItem(setNextStepItems)}>
+                + 追加
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
@@ -60,12 +118,31 @@ export function SaveModal({ task, nextTask, onSave, onCancel }: SaveModalProps) 
               <span className="label-icon">📝</span>
               残タスク・後回しにすること
             </label>
-            <textarea
-              value={remaining}
-              onChange={(e) => setRemaining(e.target.value)}
-              placeholder="忘れないようにメモ..."
-              rows={2}
-            />
+            <div className="list-input-group">
+              {remainingItems.map((item, i) => (
+                <div key={i} className="list-input-row">
+                  <span className="list-bullet">•</span>
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleItemChange(setRemainingItems, i, e.target.value)}
+                    placeholder="残タスクを入力..."
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') { e.preventDefault(); handleAddItem(setRemainingItems); }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="list-remove-btn"
+                    onClick={() => handleRemoveItem(setRemainingItems, i)}
+                    disabled={remainingItems.length === 1}
+                  >×</button>
+                </div>
+              ))}
+              <button type="button" className="list-add-btn" onClick={() => handleAddItem(setRemainingItems)}>
+                + 追加
+              </button>
+            </div>
           </div>
 
           <div className="modal-actions">

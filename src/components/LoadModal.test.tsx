@@ -17,15 +17,15 @@ const createTask = (overrides: Partial<Task> = {}): Task => ({
 });
 
 describe('LoadModal', () => {
-  it('renders modal with task name', () => {
+  it('renders modal with task name as h2', () => {
     const task = createTask({ name: 'My Task' });
     const onLoad = vi.fn();
     const onCancel = vi.fn();
 
     render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
 
-    expect(screen.getByText('ロード')).toBeInTheDocument();
-    expect(screen.getByText('「My Task」を再開します')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'My Task', level: 2 })).toBeInTheDocument();
+    expect(screen.getByText('タスクを再開します')).toBeInTheDocument();
   });
 
   it('renders no save data message when task has no progress data', () => {
@@ -156,5 +156,28 @@ describe('LoadModal', () => {
 
     expect(screen.getByText('前回の進捗')).toBeInTheDocument();
     expect(screen.queryByText('残タスク')).not.toBeInTheDocument();
+  });
+
+  it('renders newline-delimited progress data as multiple list items', () => {
+    const task = createTask({ progress: 'Item 1\nItem 2\nItem 3' });
+    const onLoad = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
+
+    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    expect(screen.getByText('Item 2')).toBeInTheDocument();
+    expect(screen.getByText('Item 3')).toBeInTheDocument();
+  });
+
+  it('renders newline-delimited nextStep data as multiple list items', () => {
+    const task = createTask({ nextStep: 'Step A\nStep B' });
+    const onLoad = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<LoadModal task={task} onLoad={onLoad} onCancel={onCancel} />);
+
+    expect(screen.getByText('Step A')).toBeInTheDocument();
+    expect(screen.getByText('Step B')).toBeInTheDocument();
   });
 });

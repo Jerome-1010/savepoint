@@ -17,18 +17,18 @@ const createTask = (overrides: Partial<Task> = {}): Task => ({
 });
 
 describe('CompleteModal', () => {
-  it('renders modal with task name', () => {
+  it('renders modal with task name as h2', () => {
     const task = createTask({ name: 'My Task' });
     const onComplete = vi.fn();
     const onCancel = vi.fn();
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    expect(screen.getByText('タスク完了')).toBeInTheDocument();
-    expect(screen.getByText('「My Task」を完了としてマークします')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'My Task', level: 2 })).toBeInTheDocument();
+    expect(screen.getByText('タスクを完了します')).toBeInTheDocument();
   });
 
-  it('initializes form with existing task data', () => {
+  it('initializes form with existing task data split by newlines', () => {
     const task = createTask({
       progress: 'Existing progress',
       remaining: 'Existing remaining',
@@ -55,7 +55,7 @@ describe('CompleteModal', () => {
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onComplete with form data when submitted', async () => {
+  it('calls onComplete with newline-joined strings when submitted', async () => {
     const user = userEvent.setup();
     const task = createTask();
     const onComplete = vi.fn();
@@ -63,8 +63,11 @@ describe('CompleteModal', () => {
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    await user.type(screen.getByPlaceholderText('完了時の状況や成果を記録...'), 'Completion notes');
-    await user.type(screen.getByPlaceholderText('今後のために残しておきたいメモ...'), 'Future notes');
+    const progressInputs = screen.getAllByPlaceholderText('完了時の状況や成果を記録...');
+    const remainingInputs = screen.getAllByPlaceholderText('今後のために残しておきたいメモ...');
+
+    await user.type(progressInputs[0], 'Completion notes');
+    await user.type(remainingInputs[0], 'Future notes');
     await user.click(screen.getByText('完了にする'));
 
     expect(onComplete).toHaveBeenCalledWith({
@@ -72,6 +75,75 @@ describe('CompleteModal', () => {
       nextStep: '',
       remaining: 'Future notes',
     });
+  });
+
+  it('adds a new list item when + 追加 button is clicked', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    const addButtons = screen.getAllByText('+ 追加');
+    expect(screen.getAllByPlaceholderText('完了時の状況や成果を記録...')).toHaveLength(1);
+
+    await user.click(addButtons[0]);
+
+    expect(screen.getAllByPlaceholderText('完了時の状況や成果を記録...')).toHaveLength(2);
+  });
+
+  it('removes a list item when × button is clicked', async () => {
+    const user = userEvent.setup();
+    const task = createTask({ progress: 'item1\nitem2' });
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    expect(screen.getAllByPlaceholderText('完了時の状況や成果を記録...')).toHaveLength(2);
+
+    const removeButtons = screen.getAllByText('×');
+    await user.click(removeButtons[0]);
+
+    expect(screen.getAllByPlaceholderText('完了時の状況や成果を記録...')).toHaveLength(1);
+  });
+
+  it('disables remove button when only one item remains', () => {
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    const removeButtons = screen.getAllByText('×');
+    expect(removeButtons[0]).toBeDisabled();
+  });
+
+  it('submits multiple progress items joined by newlines', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    const progressInputs = screen.getAllByPlaceholderText('完了時の状況や成果を記録...');
+    await user.type(progressInputs[0], 'Done 1');
+
+    const addButtons = screen.getAllByText('+ 追加');
+    await user.click(addButtons[0]);
+
+    const progressInputsAfter = screen.getAllByPlaceholderText('完了時の状況や成果を記録...');
+    await user.type(progressInputsAfter[1], 'Done 2');
+
+    await user.click(screen.getByText('完了にする'));
+
+    expect(onComplete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        progress: 'Done 1\nDone 2',
+      })
+    );
   });
 
   it('updates progress field on change', async () => {
@@ -82,7 +154,7 @@ describe('CompleteModal', () => {
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    const progressInput = screen.getByPlaceholderText('完了時の状況や成果を記録...');
+    const progressInput = screen.getAllByPlaceholderText('完了時の状況や成果を記録...')[0];
     await user.type(progressInput, 'Updated progress');
 
     expect(progressInput).toHaveValue('Updated progress');
@@ -96,7 +168,7 @@ describe('CompleteModal', () => {
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    const remainingInput = screen.getByPlaceholderText('今後のために残しておきたいメモ...');
+    const remainingInput = screen.getAllByPlaceholderText('今後のために残しておきたいメモ...')[0];
     await user.type(remainingInput, 'Updated remaining');
 
     expect(remainingInput).toHaveValue('Updated remaining');
