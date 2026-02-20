@@ -1,4 +1,5 @@
 import type { Task } from '../types';
+import { useModalKeyboard } from '../hooks/useModalKeyboard';
 import './Modal.css';
 
 interface LoadModalProps {
@@ -10,6 +11,8 @@ interface LoadModalProps {
 export function LoadModal({ task, onLoad, onCancel }: LoadModalProps) {
   const hasProgress = task.progress || task.nextStep || task.remaining;
   const lastUpdated = new Date(task.updatedAt).toLocaleString('ja-JP');
+
+  useModalKeyboard({ onConfirm: onLoad, onCancel });
 
   return (
     <div className="modal-overlay">
@@ -56,10 +59,10 @@ export function LoadModal({ task, onLoad, onCancel }: LoadModalProps) {
 
         <div className="modal-actions">
           <button type="button" className="btn btn-secondary" onClick={onCancel}>
-            キャンセル
+            キャンセル<span className="shortcut-hint" aria-hidden="true">Esc</span>
           </button>
           <button type="button" className="btn btn-primary" onClick={onLoad}>
-            再開する
+            再開する<span className="shortcut-hint" aria-hidden="true">⌘+Enter</span>
           </button>
         </div>
       </div>

@@ -35,7 +35,7 @@ describe('SaveModal', () => {
 
     render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} />);
 
-    expect(screen.getByText('保存して終了')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /保存して終了/ })).toBeInTheDocument();
   });
 
   it('renders save and switch button when next task exists', () => {
@@ -46,7 +46,7 @@ describe('SaveModal', () => {
 
     render(<SaveModal task={task} nextTask={nextTask} onSave={onSave} onCancel={onCancel} />);
 
-    expect(screen.getByText('保存して「Next Task」へ')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /保存して「Next Task」へ/ })).toBeInTheDocument();
   });
 
   it('initializes form with existing task data', () => {
@@ -73,7 +73,7 @@ describe('SaveModal', () => {
 
     render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} />);
 
-    await user.click(screen.getByText('キャンセル'));
+    await user.click(screen.getByRole('button', { name: /キャンセル/ }));
 
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
@@ -89,7 +89,7 @@ describe('SaveModal', () => {
     await user.type(screen.getByPlaceholderText('現在の進捗状況を記録...'), 'New progress');
     await user.type(screen.getByPlaceholderText('再開時に最初にやることを記録...'), 'New next step');
     await user.type(screen.getByPlaceholderText('忘れないようにメモ...'), 'New remaining');
-    await user.click(screen.getByText('保存して終了'));
+    await user.click(screen.getByRole('button', { name: /保存して終了/ }));
 
     expect(onSave).toHaveBeenCalledWith({
       progress: 'New progress',
@@ -138,5 +138,44 @@ describe('SaveModal', () => {
     await user.type(remainingInput, 'Updated remaining');
 
     expect(remainingInput).toHaveValue('Updated remaining');
+  });
+
+  it('calls onCancel when Escape key is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onSave = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it('submits form when Cmd+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onSave = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} />);
+
+    await user.keyboard('{Meta>}{Enter}{/Meta}');
+
+    expect(onSave).toHaveBeenCalledTimes(1);
+  });
+
+  it('submits form when Ctrl+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onSave = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<SaveModal task={task} nextTask={null} onSave={onSave} onCancel={onCancel} />);
+
+    await user.keyboard('{Control>}{Enter}{/Control}');
+
+    expect(onSave).toHaveBeenCalledTimes(1);
   });
 });

@@ -50,7 +50,7 @@ describe('CompleteModal', () => {
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    await user.click(screen.getByText('キャンセル'));
+    await user.click(screen.getByRole('button', { name: /キャンセル/ }));
 
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
@@ -65,7 +65,7 @@ describe('CompleteModal', () => {
 
     await user.type(screen.getByPlaceholderText('完了時の状況や成果を記録...'), 'Completion notes');
     await user.type(screen.getByPlaceholderText('今後のために残しておきたいメモ...'), 'Future notes');
-    await user.click(screen.getByText('完了にする'));
+    await user.click(screen.getByRole('button', { name: /完了にする/ }));
 
     expect(onComplete).toHaveBeenCalledWith({
       progress: 'Completion notes',
@@ -110,12 +110,51 @@ describe('CompleteModal', () => {
 
     render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
 
-    await user.click(screen.getByText('完了にする'));
+    await user.click(screen.getByRole('button', { name: /完了にする/ }));
 
     expect(onComplete).toHaveBeenCalledWith(
       expect.objectContaining({
         nextStep: '',
       })
     );
+  });
+
+  it('calls onCancel when Escape key is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it('submits form when Cmd+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    await user.keyboard('{Meta>}{Enter}{/Meta}');
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it('submits form when Ctrl+Enter is pressed', async () => {
+    const user = userEvent.setup();
+    const task = createTask();
+    const onComplete = vi.fn();
+    const onCancel = vi.fn();
+
+    render(<CompleteModal task={task} onComplete={onComplete} onCancel={onCancel} />);
+
+    await user.keyboard('{Control>}{Enter}{/Control}');
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
   });
 });
