@@ -67,6 +67,8 @@
 
 .banner-actions {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
 }
 
@@ -86,6 +88,8 @@
 .banner-btn.pause-btn {
   background: #2a3a4a;
   color: #aaccee;
+  font-size: 14px;
+  padding: 10px 20px;
 }
 
 .banner-btn.pause-btn:hover {
@@ -93,10 +97,14 @@
 }
 
 .banner-btn.complete-btn {
-  background: #1a3a2a;
+  background: transparent;
   color: #4aff4a;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  opacity: 0.7;
 }
 
 .banner-btn.complete-btn:hover {
-  background: #2a4a3a;
+  opacity: 1;
 }
