@@ -21,6 +21,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -29,6 +30,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -41,6 +43,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -49,6 +52,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -61,6 +65,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -69,6 +74,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -81,6 +87,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -89,6 +96,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -101,6 +109,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -109,6 +118,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -121,6 +131,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -129,6 +140,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -141,6 +153,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -149,6 +162,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -161,6 +175,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -169,6 +184,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -184,6 +200,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -192,6 +209,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -209,6 +227,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -217,6 +236,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -229,6 +249,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -237,6 +258,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -251,6 +273,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -259,6 +282,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -273,6 +297,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -281,6 +306,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -294,6 +320,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -302,6 +329,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -314,6 +342,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -322,6 +351,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -336,6 +366,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -344,6 +375,7 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
@@ -358,6 +390,7 @@ describe('TaskList', () => {
     const onSelect = vi.fn();
     const onComplete = vi.fn();
     const onDelete = vi.fn();
+    const onHistory = vi.fn();
 
     render(
       <TaskList
@@ -366,9 +399,57 @@ describe('TaskList', () => {
         onSelect={onSelect}
         onComplete={onComplete}
         onDelete={onDelete}
+        onHistory={onHistory}
       />
     );
 
     expect(screen.queryByText(/次:/)).not.toBeInTheDocument();
+  });
+
+  it('calls onHistory when clicking history button', async () => {
+    const user = userEvent.setup();
+    const task = createTask({ status: 'paused' });
+    const onSelect = vi.fn();
+    const onComplete = vi.fn();
+    const onDelete = vi.fn();
+    const onHistory = vi.fn();
+
+    render(
+      <TaskList
+        tasks={[task]}
+        activeTaskId={null}
+        onSelect={onSelect}
+        onComplete={onComplete}
+        onDelete={onDelete}
+        onHistory={onHistory}
+      />
+    );
+
+    await user.click(screen.getByTitle('更新履歴'));
+
+    expect(onHistory).toHaveBeenCalledWith(task);
+  });
+
+  it('shows history button for both active and completed tasks', () => {
+    const activeTask = createTask({ id: '1', status: 'paused', name: 'Active Task' });
+    const completedTask = createTask({ id: '2', status: 'completed', name: 'Completed Task' });
+    const onSelect = vi.fn();
+    const onComplete = vi.fn();
+    const onDelete = vi.fn();
+    const onHistory = vi.fn();
+
+    render(
+      <TaskList
+        tasks={[activeTask, completedTask]}
+        activeTaskId={null}
+        onSelect={onSelect}
+        onComplete={onComplete}
+        onDelete={onDelete}
+        onHistory={onHistory}
+      />
+    );
+
+    const historyButtons = screen.getAllByTitle('更新履歴');
+    expect(historyButtons).toHaveLength(2);
   });
 });

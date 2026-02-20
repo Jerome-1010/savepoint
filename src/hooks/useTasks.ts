@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Task, SavePointData } from '../types';
+import type { Task, SavePointData, TaskHistoryEntry } from '../types';
 
 const API_BASE = '/api/tasks';
 
@@ -112,6 +112,17 @@ export function useTasks() {
     }
   }, [updateTask, activeTaskId]);
 
+  const fetchHistory = useCallback(async (taskId: string): Promise<TaskHistoryEntry[]> => {
+    try {
+      const res = await fetch(`${API_BASE}/${taskId}/history`);
+      if (!res.ok) throw new Error('Failed to fetch history');
+      return await res.json();
+    } catch (error) {
+      console.error('Failed to fetch history:', error);
+      return [];
+    }
+  }, []);
+
   const activeTask = tasks.find((t) => t.id === activeTaskId) || null;
 
   return {
@@ -124,5 +135,6 @@ export function useTasks() {
     deleteTask,
     saveAndSwitch,
     completeTask,
+    fetchHistory,
   };
 }

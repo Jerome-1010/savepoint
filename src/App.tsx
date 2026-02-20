@@ -9,13 +9,15 @@ import {
   AddTaskForm,
   ActiveTaskBanner,
 } from './components';
+import { TaskHistoryModal } from './components/TaskHistoryModal';
 import './App.css';
 
 type ModalState =
   | { type: 'none' }
   | { type: 'save'; nextTask: Task | null }
   | { type: 'load'; task: Task }
-  | { type: 'complete'; task: Task };
+  | { type: 'complete'; task: Task }
+  | { type: 'history'; task: Task };
 
 function App() {
   const {
@@ -26,6 +28,7 @@ function App() {
     deleteTask,
     saveAndSwitch,
     completeTask,
+    fetchHistory,
   } = useTasks();
 
   const [modal, setModal] = useState<ModalState>({ type: 'none' });
@@ -50,6 +53,10 @@ function App() {
 
   const handleCompleteTask = (task: Task) => {
     setModal({ type: 'complete', task });
+  };
+
+  const handleHistory = (task: Task) => {
+    setModal({ type: 'history', task });
   };
 
   const handleSave = (data: SavePointData) => {
@@ -114,6 +121,7 @@ function App() {
             onSelect={handleSelectTask}
             onComplete={handleCompleteTask}
             onDelete={handleDelete}
+            onHistory={handleHistory}
           />
         </div>
       </main>
@@ -140,6 +148,14 @@ function App() {
           task={modal.task}
           onComplete={handleComplete}
           onCancel={() => setModal({ type: 'none' })}
+        />
+      )}
+
+      {modal.type === 'history' && (
+        <TaskHistoryModal
+          task={modal.task}
+          fetchHistory={fetchHistory}
+          onClose={() => setModal({ type: 'none' })}
         />
       )}
     </div>

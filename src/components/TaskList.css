@@ -150,6 +150,15 @@
   background: #2a4a3a;
 }
 
+.history-btn {
+  background: #1a2a3a;
+  color: #8aaaff;
+}
+
+.history-btn:hover {
+  background: #2a3a4a;
+}
+
 .delete-btn {
   background: #3a1a2a;
   color: #ff6a6a;

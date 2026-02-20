@@ -17,3 +17,13 @@ export interface SavePointData {
   nextStep: string;
   remaining: string;
 }
+
+export interface TaskHistoryEntry {
+  id: number;
+  taskId: string;
+  status: TaskStatus;
+  progress: string;
+  nextStep: string;
+  remaining: string;
+  savedAt: number;
+}

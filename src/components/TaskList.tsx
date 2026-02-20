@@ -7,9 +7,10 @@ interface TaskListProps {
   onSelect: (task: Task) => void;
   onComplete: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onHistory: (task: Task) => void;
 }
 
-export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete }: TaskListProps) {
+export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete, onHistory }: TaskListProps) {
   const activeTasks = tasks.filter((t) => t.status !== 'completed');
   const completedTasks = tasks.filter((t) => t.status === 'completed');
 
@@ -59,6 +60,13 @@ export function TaskList({ tasks, activeTaskId, onSelect, onComplete, onDelete }
             ✓
           </button>
         )}
+        <button
+          className="task-btn history-btn"
+          onClick={(e) => { e.stopPropagation(); onHistory(task); }}
+          title="更新履歴"
+        >
+          📜
+        </button>
         <button
           className="task-btn delete-btn"
           onClick={(e) => { e.stopPropagation(); onDelete(task); }}
