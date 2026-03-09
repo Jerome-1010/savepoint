@@ -3,6 +3,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import tasks from './routes/tasks.js';
+import issues from './routes/issues.js';
 
 const app = new Hono();
 
@@ -11,6 +12,7 @@ app.use('*', logger());
 
 // API ルート
 app.route('/api/tasks', tasks);
+app.route('/api/issues', issues);
 
 // 静的ファイル配信（Viteビルド成果物）
 app.use('/*', serveStatic({ root: './dist' }));
